@@ -4,14 +4,14 @@ WORKDIR /app
 
 COPY . .
 
-RUN chmod +x gradlew
+RUN chmod +x mvnw
 
-RUN ./gradlew clean bootJar --stacktrace --info --no-daemon
+RUN ./mvnw clean package -DskipTests
 
 FROM eclipse-temurin:25-jre
 
 WORKDIR /app
 
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=build /app/target/*.jar app.jar
 
 CMD ["java", "-jar", "app.jar"]
